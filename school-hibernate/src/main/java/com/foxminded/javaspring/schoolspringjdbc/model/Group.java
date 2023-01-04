@@ -1,15 +1,28 @@
 package com.foxminded.javaspring.schoolspringjdbc.model;
 
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Entity
+@Table(name = "groups")
 public class Group {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int groupID;
+
+	@Column(name = "GROUP_NAME")
 	private String groupName;
-	
-	
 
 }

@@ -22,7 +22,7 @@ class CourseGeneratorServiceTest {
 	@Test
 	void testGenerateCourses() {
 		assertNotNull(courseGeneratorService.generateCourses());
-		assertEquals(courseGeneratorService.courseNames.size(), courseGeneratorService.generateCourses().size());
+		assertEquals(10, courseGeneratorService.generateCourses().size());
 	}
 
 }
