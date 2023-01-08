@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 
@@ -13,10 +13,10 @@ import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 public class GroupService {
 
 	private ScannerUtil scannerUtil;
-	private JdbcGroupDao jdbcGroupDao;
+	private JPAGroupDao jdbcGroupDao;
 
 	@Autowired
-	public GroupService(ScannerUtil scannerUtil, JdbcGroupDao jdbcGroupDao) {
+	public GroupService(ScannerUtil scannerUtil, JPAGroupDao jdbcGroupDao) {
 		this.scannerUtil = scannerUtil;
 		this.jdbcGroupDao = jdbcGroupDao;
 	}

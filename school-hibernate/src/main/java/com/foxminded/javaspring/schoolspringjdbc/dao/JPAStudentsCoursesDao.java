@@ -16,12 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class JdbcStudentsCoursesDao {
+public class JPAStudentsCoursesDao implements StudentsCoursesDao {
 
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public JdbcStudentsCoursesDao (JdbcTemplate jdbcTemplate) {
+	public JPAStudentsCoursesDao (JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 

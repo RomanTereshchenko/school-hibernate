@@ -9,11 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcCourseDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentsCoursesDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcTablesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPACourseDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentsCoursesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPATablesDao;
 import com.foxminded.javaspring.schoolspringjdbc.service.CourseGeneratorService;
 import com.foxminded.javaspring.schoolspringjdbc.service.DBGeneratorService;
 import com.foxminded.javaspring.schoolspringjdbc.service.GroupGeneratorService;
@@ -23,21 +23,21 @@ import com.foxminded.javaspring.schoolspringjdbc.service.StudentGeneratorService
 class DBGeneratorServiceTest {
 	
 	@Mock
-	private JdbcTablesDao jdbcTablesDao;
+	private JPATablesDao jdbcTablesDao;
 	@Mock
 	private GroupGeneratorService groupGeneratorService;
 	@Mock
-	private JdbcGroupDao jdbcGroupDao;
+	private JPAGroupDao jdbcGroupDao;
 	@Mock
 	private CourseGeneratorService courseGeneratorService;
 	@Mock
-	private JdbcCourseDao jdbcCourseDao;
+	private JPACourseDao jdbcCourseDao;
 	@Mock
 	private StudentGeneratorService studentGeneratorService;
 	@Mock
-	private JdbcStudentDao jdbcStudentDao;
+	private JPAStudentDao jdbcStudentDao;
 	@Mock
-	private JdbcStudentsCoursesDao jdbcStudentsCoursesDao;
+	private JPAStudentsCoursesDao jdbcStudentsCoursesDao;
 	
 	@InjectMocks
 	private DBGeneratorService dbGeneratorService;

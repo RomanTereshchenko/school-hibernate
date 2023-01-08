@@ -2,6 +2,8 @@ package com.foxminded.javaspring.schoolspringjdbc.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,13 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class JdbcGroupDao {
+public class JPAGroupDao implements GroupDao {
 
-	private JdbcTemplate jdbcTemplate;
+	private final EntityManager em;
 	
 	@Autowired
-	public JdbcGroupDao (JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public JPAGroupDao (EntityManager em) {
+		this.em = em;
 	}
 
 	@Transactional
@@ -30,15 +32,17 @@ public class JdbcGroupDao {
 		log.info("Groups added to School database");
 	}
 
+	@Override
 	public int addGroupToDB(Group group) {
-		return jdbcTemplate.update("INSERT INTO school.groups(group_name) VALUES(?);", group.getGroupName());
+		return em.createNativeQuery("INSERT INTO school.groups(group_name) VALUES(?);", Group.class)
+				.setParameter(1, group.getGroupName()).executeUpdate();
 	}
 
+	@Override
 	public List<Group> selectGroupsByStudentsCount(int studentsCount) {
-		return jdbcTemplate.query("SELECT g.group_id AS groupID, g.group_name AS groupName FROM "
+		return em.createNativeQuery("SELECT g.group_id AS groupID, g.group_name AS groupName FROM "
 				+ "school.groups g INNER JOIN school.students s ON g.group_id = s.group_id "
-				+ "GROUP BY g.group_id HAVING COUNT (g.group_id) <= ?", 
-				BeanPropertyRowMapper.newInstance(Group.class), studentsCount);
+				+ "GROUP BY g.group_id HAVING COUNT (g.group_id) <= ?").setParameter(1, studentsCount).getResultList();
 	}
 
 }

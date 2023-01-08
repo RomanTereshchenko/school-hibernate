@@ -8,8 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.*;
 
@@ -24,15 +26,19 @@ public class Student {
 	private int studentID;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "GROUP_ID")
+	private Group group;
+
+	@Column(name = "GROUP_ID", insertable=false, updatable=false)
 	private int groupID;
-	
+
 	@Column(name = "FIRST_NAME")
 	private String firstName;
-	
+
 	@Column(name = "LAST_NAME")
 	private String lastName;
-	
-	@Column(name = "COURSES")
+
+	@Transient
 	private List<Course> courses;
 
 	public Student(int studentID, String firstName, String lastName) {

@@ -10,17 +10,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
 
 @SpringBootTest
 class JdbcGroupDaoTest {
 
-	private JdbcGroupDao jdbcGroupDao;
+	private JPAGroupDao jdbcGroupDao;
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public JdbcGroupDaoTest(JdbcGroupDao jdbcGroupDao, JdbcTemplate jdbcTemplate) {
+	public JdbcGroupDaoTest(JPAGroupDao jdbcGroupDao, JdbcTemplate jdbcTemplate) {
 		this.jdbcGroupDao = jdbcGroupDao;
 		this.jdbcTemplate = jdbcTemplate;
 	}

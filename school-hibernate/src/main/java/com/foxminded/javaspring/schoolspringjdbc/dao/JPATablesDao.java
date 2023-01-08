@@ -5,12 +5,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcTablesDao {
+public class JPATablesDao implements TablesDao {
 
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public JdbcTablesDao(JdbcTemplate jdbcTemplate) {
+	public JPATablesDao(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 

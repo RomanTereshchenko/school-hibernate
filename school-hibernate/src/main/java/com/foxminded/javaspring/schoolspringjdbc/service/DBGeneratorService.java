@@ -8,11 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcCourseDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentsCoursesDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcTablesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPACourseDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentsCoursesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPATablesDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
 import com.foxminded.javaspring.schoolspringjdbc.model.Student;
@@ -23,13 +23,13 @@ import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 @Service
 public class DBGeneratorService {
 	
-	private JdbcTablesDao jdbcTablesDao;
+	private JPATablesDao jdbcTablesDao;
 	private GroupGeneratorService groupGeneratorService;
-	private JdbcGroupDao jdbcGroupDao;
-	private JdbcCourseDao jdbcCourseDao;
+	private JPAGroupDao jdbcGroupDao;
+	private JPACourseDao jdbcCourseDao;
 	private StudentGeneratorService studentGeneratorService;
-	private JdbcStudentDao jdbcStudentDao;
-	private JdbcStudentsCoursesDao jdbcStudentsCoursesDao;
+	private JPAStudentDao jdbcStudentDao;
+	private JPAStudentsCoursesDao jdbcStudentsCoursesDao;
 	private CourseGeneratorService courseGeneratorService;
 	private ScannerUtil scannerUtil;
 	private int groupsNumber = 10;
@@ -44,9 +44,9 @@ public class DBGeneratorService {
 	public static List<Student> students = new ArrayList<>();
 
 	@Autowired
-	public DBGeneratorService(JdbcTablesDao jdbcTablesDao, GroupGeneratorService groupGeneratorService,
-			JdbcGroupDao jdbcGroupDao, JdbcCourseDao jdbcCourseDao, StudentGeneratorService studentGeneratorService,
-			JdbcStudentDao jdbcStudentDao, JdbcStudentsCoursesDao jdbcStudentsCoursesDao,
+	public DBGeneratorService(JPATablesDao jdbcTablesDao, GroupGeneratorService groupGeneratorService,
+			JPAGroupDao jdbcGroupDao, JPACourseDao jdbcCourseDao, StudentGeneratorService studentGeneratorService,
+			JPAStudentDao jdbcStudentDao, JPAStudentsCoursesDao jdbcStudentsCoursesDao,
 			CourseGeneratorService courseGeneratorService, GroupService groupService, StudentService studentService,
 			StudentCourseService studentCourseService, ScannerUtil scannerUtil) {
 		this.jdbcTablesDao = jdbcTablesDao;

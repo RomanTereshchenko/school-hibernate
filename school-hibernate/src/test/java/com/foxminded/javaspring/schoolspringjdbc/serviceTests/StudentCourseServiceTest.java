@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentsCoursesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentsCoursesDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.StudentCourse;
 import com.foxminded.javaspring.schoolspringjdbc.service.DBGeneratorService;
@@ -29,7 +29,7 @@ class StudentCourseServiceTest {
 	private ScannerUtil scannerUtil;
 
 	@Mock
-	private JdbcStudentsCoursesDao jdbcStudentsCoursesDao;
+	private JPAStudentsCoursesDao jdbcStudentsCoursesDao;
 	
 	@Mock
 	private DBGeneratorService dbGeneratorService;

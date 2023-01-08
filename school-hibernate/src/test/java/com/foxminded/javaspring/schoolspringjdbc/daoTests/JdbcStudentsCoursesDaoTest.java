@@ -14,17 +14,17 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentsCoursesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentsCoursesDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.StudentCourse;
 
 @SpringBootTest
 class JdbcStudentsCoursesDaoTest {
 
-	private JdbcStudentsCoursesDao jdbcStudentsCoursesDao;
+	private JPAStudentsCoursesDao jdbcStudentsCoursesDao;
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public JdbcStudentsCoursesDaoTest(JdbcStudentsCoursesDao jdbcStudentsCoursesDao, JdbcTemplate jdbcTemplate) {
+	public JdbcStudentsCoursesDaoTest(JPAStudentsCoursesDao jdbcStudentsCoursesDao, JdbcTemplate jdbcTemplate) {
 		this.jdbcStudentsCoursesDao = jdbcStudentsCoursesDao;
 		this.jdbcTemplate = jdbcTemplate;
 	}

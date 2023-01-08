@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Student;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
@@ -14,10 +14,10 @@ import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 public class StudentService {
 
 	private ScannerUtil scannerUtil;
-	private JdbcStudentDao jdbcStudentDao;
+	private JPAStudentDao jdbcStudentDao;
 
 	@Autowired
-	public StudentService(ScannerUtil scannerUtil, JdbcStudentDao jdbcStudentDao) {
+	public StudentService(ScannerUtil scannerUtil, JPAStudentDao jdbcStudentDao) {
 		this.scannerUtil = scannerUtil;
 		this.jdbcStudentDao = jdbcStudentDao;
 	}
