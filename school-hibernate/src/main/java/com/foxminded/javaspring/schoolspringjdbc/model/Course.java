@@ -14,18 +14,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table (name = "courses")
+@Entity (name = "courses")
+@Table (name = "courses", schema = "school")
 public class Course {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column (name = "course_id")
 	private int courseID;
 	
-	@Column(name = "COUSE_NAME")
+	@Column(name = "course_name")
 	private String courseName;
 	
-	@Column(name = "COURSE_DESCRIPTION")
+	@Column(name = "course_description")
 	private String courseDescription;
 	
 	public Course(int courseID, String courseName) {

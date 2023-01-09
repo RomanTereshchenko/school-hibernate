@@ -30,10 +30,10 @@ public class JPACourseDao implements CourseDao {
 	}
 
 	@Override
-	public int addCourseToDB(Course course) {
-		return em.createNativeQuery("INSERT INTO school.courses(course_name) VALUES (?);", Course.class)
-		.setParameter(1, course.getCourseName()).executeUpdate();
-
+	public void addCourseToDB(Course course) {
+		Course persistingCourse = new Course();
+		persistingCourse.setCourseName(course.getCourseName());
+		em.persist(persistingCourse);
 	}
 
 }

@@ -14,15 +14,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "groups")
+@Entity(name = "groups")
+@Table(name = "groups", schema = "school")
 public class Group {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "group_id")
 	private int groupID;
 
-	@Column(name = "GROUP_NAME")
+	@Column(name = "group_name")
 	private String groupName;
 
 }
