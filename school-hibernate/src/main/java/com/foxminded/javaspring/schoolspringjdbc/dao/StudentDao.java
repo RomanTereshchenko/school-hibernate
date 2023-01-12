@@ -10,7 +10,7 @@ public interface StudentDao {
 	
 	public int deleteStudentFromDB(int studentID);
 	
-	public int addGroupIDToStudentInDB(Student student);
+	public void addGroupIDToStudentInDB(Student student);
 	
 	public List<Student> findStudentsRelatedToCourse(String courseName);
 

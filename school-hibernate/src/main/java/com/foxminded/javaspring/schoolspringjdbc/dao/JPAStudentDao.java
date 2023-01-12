@@ -62,9 +62,11 @@ public class JPAStudentDao implements StudentDao {
 	@Override
 	@Transactional
 	@Modifying
-	public int addGroupIDToStudentInDB(Student student) {
-		 return em.createNativeQuery("UPDATE school.students SET group_id = ? WHERE student_id = ?")
-				.setParameter(1, student.getGroupID()).setParameter(2, student.getStudentID()).executeUpdate();
+		public void addGroupIDToStudentInDB(Student student) {
+		em.merge(student);
+		
+//		 return em.createNativeQuery("UPDATE school.students SET group_id = ? WHERE student_id = ?")
+//				.setParameter(1, student.getGroupID()).setParameter(2, student.getStudentID()).executeUpdate();
 	}
 
 	@Override
