@@ -14,36 +14,36 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "students_courses")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Entity(name = "students_courses")
+//@Table(name = "students_courses", schema = "school")
 public class StudentCourse {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int studentCourseId;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "STUDENT_ID")
-	private Student student;
-	
-	@Column(name = "STUDENT_ID", insertable = false, updatable = false)	
-	int studentId;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "COURSE_ID")
-	private Course course;
-	
-	@Column(name = "COURSE_ID", insertable = false, updatable = false)	
-	int courseId;
-
-	public StudentCourse(int studentId, int courseId) {
-		super();
-		this.studentId = studentId;
-		this.courseId = courseId;
-	}
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private int studentCourseId;
+//	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "student_id")
+//	private Student student;
+//	
+//	@Column(name = "student_id", insertable = false, updatable = false)	
+//	private int studentId;
+//
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "course_id")
+//	private Course course;
+//	
+//	@Column(name = "course_id", insertable = false, updatable = false)	
+//	private int courseId;
+//
+//	public StudentCourse(int studentId, int courseId) {
+//		super();
+//		this.studentId = studentId;
+//		this.courseId = courseId;
+//	}
 
 	
 }

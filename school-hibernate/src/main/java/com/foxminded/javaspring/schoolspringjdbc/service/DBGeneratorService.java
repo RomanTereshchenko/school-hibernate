@@ -75,7 +75,8 @@ public class DBGeneratorService {
 		studentGeneratorService.assignAllGroupsToAllItsStudents();
 		jdbcStudentDao.addGroupIDToAllTheirStudentsInDB();
 		studentGeneratorService.assignCoursesToAllStudents();
-		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
+//		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
+		jdbcStudentDao.updateStudent(null);
 
 }
 
@@ -103,10 +104,10 @@ public class DBGeneratorService {
 					studentService.deleteStudent();
 					break;
 				case 5:
-					studentCourseService.addStudentToCourse();
+					studentService.addStudentToCourse();
 					break;
 				case 6:
-					studentCourseService.removeStudentFromCourse();
+					studentService.removeStudentFromCourse();
 					break;
 				default:
 					exit(0);

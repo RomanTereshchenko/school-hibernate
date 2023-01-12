@@ -48,7 +48,7 @@ class JdbcStudentDaoTest {
 
 	@Test
 	void testAddStudentToDB() {
-		jdbcStudentDao.addStudentToDB(new Student("TestFName", "TestLName"));
+		jdbcStudentDao.saveStudent(new Student("TestFName", "TestLName"));
 		Student student = jdbcTemplate.queryForObject(
 				"SELECT * FROM school.students WHERE first_name = ? AND " + "last_name = ?;",
 				BeanPropertyRowMapper.newInstance(Student.class), "TestFName", "TestLName");

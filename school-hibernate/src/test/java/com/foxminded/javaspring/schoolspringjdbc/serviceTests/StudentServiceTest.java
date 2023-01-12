@@ -46,9 +46,8 @@ class StudentServiceTest {
 	@Test
 	void testAddNewStudent() {
 		Mockito.when(scannerUtil.scanString()).thenReturn("TestName");
-		Mockito.when(jdbcStudentDao.addStudentToDB(any(Student.class))).thenReturn(1);
 		studentService.addNewStudent();
-		verify(jdbcStudentDao).addStudentToDB(any(Student.class));
+		verify(jdbcStudentDao).saveStudent(any(Student.class));
 	}
 
 	@Test

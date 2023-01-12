@@ -6,7 +6,7 @@ import com.foxminded.javaspring.schoolspringjdbc.model.Student;
 
 public interface StudentDao {
 	
-	public int addStudentToDB(Student student);
+	public void saveStudent(Student student);
 	
 	public int deleteStudentFromDB(int studentID);
 	

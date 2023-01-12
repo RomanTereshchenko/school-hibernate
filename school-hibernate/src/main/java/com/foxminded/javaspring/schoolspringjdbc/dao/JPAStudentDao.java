@@ -3,8 +3,10 @@ package com.foxminded.javaspring.schoolspringjdbc.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JPAStudentDao implements StudentDao {
 
-	private EntityManager em;
+	@PersistenceContext
+	private final EntityManager em;
 
 	@Autowired
 	public JPAStudentDao(EntityManager em) {
@@ -26,19 +29,23 @@ public class JPAStudentDao implements StudentDao {
 
 	@Transactional
 	public void addStudentsToDB() {
-		DBGeneratorService.students.forEach(this::addStudentToDB);
+		DBGeneratorService.students.forEach(this::saveStudent);
 		log.info("Students added to School database");
 	}
 
 	@Override
-	public int addStudentToDB(Student student) {
-		return em.createNativeQuery("INSERT INTO school.students (first_name, last_name) VALUES (?, ?);", Student.class)
-				.setParameter(1, student.getFirstName()).setParameter(2, student.getLastName()).executeUpdate();
+	@Transactional
+	public void saveStudent(Student student) {
+		Student persistingStudent = new Student();
+		persistingStudent.setFirstName(student.getFirstName());
+		persistingStudent.setLastName(student.getLastName());
+		em.persist(persistingStudent);
 	}
 
 	@Override
+	@Transactional
 	public int deleteStudentFromDB(int studentID) {
-		return em.createQuery("DELETE FROM school.students s WHERE s.student_id AS studentID = ?", Student.class)
+		return em.createNativeQuery("DELETE FROM school.students s WHERE s.student_id = ?", Student.class)
 				.setParameter(1, studentID).executeUpdate();
 	}
 
@@ -53,18 +60,26 @@ public class JPAStudentDao implements StudentDao {
 	}
 
 	@Override
+	@Transactional
+	@Modifying
 	public int addGroupIDToStudentInDB(Student student) {
-		return em.createNativeQuery("UPDATE school.students SET group_id = ? WHERE student_id = ?")
+		 return em.createNativeQuery("UPDATE school.students SET group_id = ? WHERE student_id = ?")
 				.setParameter(1, student.getGroupID()).setParameter(2, student.getStudentID()).executeUpdate();
 	}
 
 	@Override
+	@Transactional
 	public List<Student> findStudentsRelatedToCourse(String courseName) {
-		return em.createQuery(
-				"SELECT s.student_id AS studentID, s.first_name AS firstName, "
-						+ "s.last_name AS lastName FROM school.students s "
+		return em.createNativeQuery(
+				"SELECT s.student_id, s.group_id, s.first_name, " + "s.last_name FROM school.students s "
 						+ "INNER JOIN school.students_courses sc ON s.student_id = sc.student_id "
 						+ "INNER JOIN school.courses c ON c.course_id = sc.course_id " + "WHERE course_name = ?",
 				Student.class).setParameter(1, courseName).getResultList();
 	}
+	
+	@Transactional
+	public void updateStudent(Student student) {
+		em.merge(student);
+	}
+
 }

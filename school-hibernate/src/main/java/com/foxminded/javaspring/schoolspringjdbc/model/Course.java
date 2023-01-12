@@ -1,10 +1,12 @@
 package com.foxminded.javaspring.schoolspringjdbc.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +21,6 @@ import lombok.NoArgsConstructor;
 public class Course {
 	
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "course_id")
 	private int courseID;
 	
@@ -28,6 +29,9 @@ public class Course {
 	
 	@Column(name = "course_description")
 	private String courseDescription;
+	
+	@ManyToMany(mappedBy = "coursesSet")
+	private Set<Student> studentsSet = new HashSet<>();
 	
 	public Course(int courseID, String courseName) {
 		this.courseID = courseID;

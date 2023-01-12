@@ -55,7 +55,7 @@ class DBGeneratorServiceTest {
 		studentGeneratorService.assignAllGroupsToAllItsStudents();
 		jdbcStudentDao.addGroupIDToAllTheirStudentsInDB();
 		studentGeneratorService.assignCoursesToAllStudents();
-		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
+//		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
 		verify(jdbcTablesDao).truncateTables();
 		verify(groupGeneratorService).generateNGroups(anyInt());
 		verify(jdbcGroupDao).addAllGroupsToDB();
@@ -66,7 +66,7 @@ class DBGeneratorServiceTest {
 		verify(studentGeneratorService).assignAllGroupsToAllItsStudents();
 		verify(jdbcStudentDao).addGroupIDToAllTheirStudentsInDB();
 		verify(studentGeneratorService).assignCoursesToAllStudents();
-		verify(jdbcStudentsCoursesDao).addStudentsCoursesAssignmentsToDB();
+//		verify(jdbcStudentsCoursesDao).addStudentsCoursesAssignmentsToDB();
 	}
 	
 

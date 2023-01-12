@@ -22,18 +22,17 @@ public class JPACourseDao implements CourseDao {
 		this.em = em;
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void addAllCoursesToDB() {
-		DBGeneratorService.courses.forEach(this::addCourseToDB);
+		DBGeneratorService.courses.forEach(this::saveCourse);
 		log.info("Courses added to School database");
 	}
 
 	@Override
-	public void addCourseToDB(Course course) {
-		Course persistingCourse = new Course();
-		persistingCourse.setCourseName(course.getCourseName());
-		em.persist(persistingCourse);
+	@Transactional
+	public void saveCourse(Course course) {
+		em.persist(course);
 	}
 
 }

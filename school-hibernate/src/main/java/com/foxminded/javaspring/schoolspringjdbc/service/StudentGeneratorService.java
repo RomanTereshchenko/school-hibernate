@@ -3,8 +3,10 @@ package com.foxminded.javaspring.schoolspringjdbc.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,13 +87,13 @@ public class StudentGeneratorService {
 			courseIDs.add(i);
 		Collections.shuffle(courseIDs);
 		int randomCourseIDIndex = 0;
-		List<Course> coursesOfStudent = new ArrayList<>();
+		Set<Course> coursesOfStudentSet = new HashSet<>();
 		while (numberOfAssignedCourses <= numberOfCoursesLimit) {
-			coursesOfStudent.add(DBGeneratorService.courses.get(courseIDs.get(randomCourseIDIndex)));
+			coursesOfStudentSet.add(DBGeneratorService.courses.get(courseIDs.get(randomCourseIDIndex)));
 			randomCourseIDIndex++;
 			numberOfAssignedCourses++;
 		}
-		DBGeneratorService.students.get(nextStudentID).setCourses(coursesOfStudent);
+		DBGeneratorService.students.get(nextStudentID).setCoursesSet(coursesOfStudentSet);
 	}
 
 }

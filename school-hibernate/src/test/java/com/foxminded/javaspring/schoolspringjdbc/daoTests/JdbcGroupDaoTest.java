@@ -44,7 +44,7 @@ class JdbcGroupDaoTest {
 
 	@Test
 	void testAddGroupToDB() {
-		jdbcGroupDao.addGroupToDB(new Group(1, "tt-00"));
+		jdbcGroupDao.saveGroup(new Group(1, "tt-00"));
 		Group group = jdbcTemplate.queryForObject(
 				"SELECT g.group_id AS groupID, g.group_name as groupName FROM school.groups g WHERE group_name = ?",
 				BeanPropertyRowMapper.newInstance(Group.class), "tt-00");
@@ -54,7 +54,7 @@ class JdbcGroupDaoTest {
 
 	@Test
 	void selectGroupsByStudentsCount_ReturnsGropWithSelectedStudentCount() {
-		jdbcGroupDao.addGroupToDB(new Group(1, "tt-00"));
+		jdbcGroupDao.saveGroup(new Group(1, "tt-00"));
 		jdbcTemplate.update(
 				"INSERT INTO school.students (group_id, first_name, last_name) VALUES (1, 'TestFName1', 'TestLName1');");
 		jdbcTemplate.update(

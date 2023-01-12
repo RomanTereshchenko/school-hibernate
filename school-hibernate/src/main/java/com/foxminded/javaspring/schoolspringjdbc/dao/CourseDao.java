@@ -6,6 +6,6 @@ public interface CourseDao {
 	
 	public void addAllCoursesToDB();
 	
-	public void addCourseToDB(Course course);
+	public void saveCourse(Course course);
 
 }
