@@ -22,10 +22,12 @@ public class CourseGeneratorService {
 	public List<Course> generateCourses() {
 		List<Course> coursesLocal = new ArrayList<>();
 		for (int i = 1; i <= courseNames.size(); i++) {
-			coursesLocal.add(new Course((i), courseNames.get(i - 1)));
+			coursesLocal.add(new Course(courseNames.get(i - 1)));
 		}
 		log.info("Courses generated");
 		return coursesLocal;
 	}
+	
+	
 
 }

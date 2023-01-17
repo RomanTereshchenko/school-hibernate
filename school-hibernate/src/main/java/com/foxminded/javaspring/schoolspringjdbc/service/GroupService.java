@@ -13,18 +13,18 @@ import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 public class GroupService {
 
 	private ScannerUtil scannerUtil;
-	private JPAGroupDao jdbcGroupDao;
+	private JPAGroupDao jpaGroupDao;
 
 	@Autowired
-	public GroupService(ScannerUtil scannerUtil, JPAGroupDao jdbcGroupDao) {
+	public GroupService(ScannerUtil scannerUtil, JPAGroupDao jpaGroupDao) {
 		this.scannerUtil = scannerUtil;
-		this.jdbcGroupDao = jdbcGroupDao;
+		this.jpaGroupDao = jpaGroupDao;
 	}
 
 	public List<Group> findGroupsByStudentsCount() {
 		System.out.println("Find all groups with less or equal students� number: \n Enter a number between 10 and 30");
 		int lessOrEqualNum = scannerUtil.scanInt();
-		List<Group> selectedGroups = jdbcGroupDao.selectGroupsByStudentsCount(lessOrEqualNum);
+		List<Group> selectedGroups = jpaGroupDao.selectGroupsByStudentsCount(lessOrEqualNum);
 		for (Group group : selectedGroups) {
 			System.out.println(group.getGroupName());
 		}

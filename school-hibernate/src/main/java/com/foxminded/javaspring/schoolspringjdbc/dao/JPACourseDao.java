@@ -1,6 +1,7 @@
 package com.foxminded.javaspring.schoolspringjdbc.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,8 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class JPACourseDao implements CourseDao {
+public class JPACourseDao {
 
+	@PersistenceContext
 	private final EntityManager em;
 
 	@Autowired
@@ -22,14 +24,12 @@ public class JPACourseDao implements CourseDao {
 		this.em = em;
 	}
 
-	@Override
 	@Transactional
 	public void addAllCoursesToDB() {
 		DBGeneratorService.courses.forEach(this::saveCourse);
 		log.info("Courses added to School database");
 	}
 
-	@Override
 	@Transactional
 	public void saveCourse(Course course) {
 		em.persist(course);

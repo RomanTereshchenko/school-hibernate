@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class JPAStudentDao implements StudentDao {
+public class JPAStudentDao {
 
 	@PersistenceContext
 	private final EntityManager em;
@@ -33,16 +33,11 @@ public class JPAStudentDao implements StudentDao {
 		log.info("Students added to School database");
 	}
 
-	@Override
 	@Transactional
 	public void saveStudent(Student student) {
-		Student persistingStudent = new Student();
-		persistingStudent.setFirstName(student.getFirstName());
-		persistingStudent.setLastName(student.getLastName());
-		em.persist(persistingStudent);
+		em.persist(student);
 	}
 
-	@Override
 	@Transactional
 	public int deleteStudentFromDB(int studentID) {
 		return em.createNativeQuery("DELETE FROM school.students s WHERE s.student_id = ?", Student.class)
@@ -50,26 +45,21 @@ public class JPAStudentDao implements StudentDao {
 	}
 
 	@Transactional
-	public void addGroupIDToAllTheirStudentsInDB() {
+	public void updateAllStudentsInDB() {
 		for (Student student : DBGeneratorService.students) {
 			if (student.getGroupID() != 0) {
-				addGroupIDToStudentInDB(student);
+				updateStudent(student);
 			}
 		}
-		log.info("Students assigned to groups in School database");
+		log.info("Students updated");
 	}
 
-	@Override
 	@Transactional
 	@Modifying
-		public void addGroupIDToStudentInDB(Student student) {
-		em.merge(student);
-		
-//		 return em.createNativeQuery("UPDATE school.students SET group_id = ? WHERE student_id = ?")
-//				.setParameter(1, student.getGroupID()).setParameter(2, student.getStudentID()).executeUpdate();
+	public void updateStudent(Student student) {
+		em.merge(student); 
 	}
 
-	@Override
 	@Transactional
 	public List<Student> findStudentsRelatedToCourse(String courseName) {
 		return em.createNativeQuery(
@@ -77,11 +67,6 @@ public class JPAStudentDao implements StudentDao {
 						+ "INNER JOIN school.students_courses sc ON s.student_id = sc.student_id "
 						+ "INNER JOIN school.courses c ON c.course_id = sc.course_id " + "WHERE course_name = ?",
 				Student.class).setParameter(1, courseName).getResultList();
-	}
-	
-	@Transactional
-	public void updateStudent(Student student) {
-		em.merge(student);
 	}
 
 }

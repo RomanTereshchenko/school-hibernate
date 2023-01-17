@@ -9,19 +9,18 @@ import org.springframework.stereotype.Service;
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Student;
-import com.foxminded.javaspring.schoolspringjdbc.model.StudentCourse;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 
 @Service
 public class StudentService {
 
 	private ScannerUtil scannerUtil;
-	private JPAStudentDao jdbcStudentDao;
+	private JPAStudentDao jpaStudentDao;
 
 	@Autowired
-	public StudentService(ScannerUtil scannerUtil, JPAStudentDao jdbcStudentDao) {
+	public StudentService(ScannerUtil scannerUtil, JPAStudentDao jpaStudentDao) {
 		this.scannerUtil = scannerUtil;
-		this.jdbcStudentDao = jdbcStudentDao;
+		this.jpaStudentDao = jpaStudentDao;
 	}
 
 	public List<Student> findStudentsRelatedToCourse() {
@@ -31,7 +30,7 @@ public class StudentService {
 			System.out.println(course.getCourseName());
 		}
 		String courseName = scannerUtil.scanString();
-		List<Student> studentsOfCourse = jdbcStudentDao.findStudentsRelatedToCourse(courseName);
+		List<Student> studentsOfCourse = jpaStudentDao.findStudentsRelatedToCourse(courseName);
 		for (Student student : studentsOfCourse) {
 			System.out.println(student.getFirstName() + " " + student.getLastName());
 		}
@@ -45,7 +44,7 @@ public class StudentService {
 		String firstName = scannerUtil.scanString();
 		System.out.println("Enter the student last name");
 		String lastName = scannerUtil.scanString();
-		jdbcStudentDao.saveStudent(new Student(firstName, lastName));
+		jpaStudentDao.saveStudent(new Student(firstName, lastName));
 		System.out.println("New student " + firstName + " " + lastName + " is added to School database");
 		System.out.println();
 	}
@@ -54,7 +53,7 @@ public class StudentService {
 		System.out.println("Delete a student by the STUDENT_ID");
 		System.out.println("Enter the student ID");
 		int studentIdToDelete = scannerUtil.scanInt();
-		jdbcStudentDao.deleteStudentFromDB(studentIdToDelete);
+		jpaStudentDao.deleteStudentFromDB(studentIdToDelete);
 		System.out.println("Student with ID " + studentIdToDelete + " is deleted from School database");
 		System.out.println();
 	}
@@ -69,15 +68,15 @@ public class StudentService {
 		}
 		System.out.println("Enter the course ID");
 		int courseId = scannerUtil.scanInt();
-		Set<Course> studentCourses = DBGeneratorService.students.get(studentId - 1).getCoursesSet();
+		Set<Course> studentCourses = DBGeneratorService.students.get(studentId - 1).getCourses();
 		for (Course studentCourse : studentCourses) {
 			if (studentCourse.getCourseID() == courseId) {
 				System.out.println("This student is already assigned to this course. Choose other student and course.");
 				return;
 			}
-//			jdbcStudentsCoursesDao.addStudentCourseAssignmentInDB(new StudentCourse(studentId, courseId));
-			DBGeneratorService.students.get(studentId - 1).getCoursesSet()
+			DBGeneratorService.students.get(studentId - 1).getCourses()
 					.add(DBGeneratorService.courses.get(courseId - 1));
+			jpaStudentDao.updateStudent(DBGeneratorService.students.get(studentId - 1));
 			System.out.println("Course with ID " + courseId + " is assigned to student with ID " + studentId
 					+ " in School database");
 			return;
@@ -88,7 +87,7 @@ public class StudentService {
 		System.out.println("Remove the student from one of their courses");
 		System.out.println("Enter the student ID");
 		int studentIdToRemove = scannerUtil.scanInt();
-		Set<Course> studentCourses = DBGeneratorService.students.get(studentIdToRemove - 1).getCoursesSet();
+		Set<Course> studentCourses = DBGeneratorService.students.get(studentIdToRemove - 1).getCourses();
 		System.out.println("This student is assigned to the following courses:");
 		for (Course studentCourse : studentCourses) {
 			System.out.println(studentCourse.getCourseID() + " - "
@@ -98,9 +97,9 @@ public class StudentService {
 		int courseIdToRemove = scannerUtil.scanInt();
 		for (Course studentCourse : studentCourses) {
 			if (studentCourse.getCourseID() == courseIdToRemove) {
-//				jdbcStudentDao.deleteStudentFromCourse(studentIdToRemove, courseIdToRemove);
-				DBGeneratorService.students.get(studentIdToRemove - 1).getCoursesSet()
+				DBGeneratorService.students.get(studentIdToRemove - 1).getCourses()
 						.remove(DBGeneratorService.courses.get(courseIdToRemove - 1));
+				jpaStudentDao.updateStudent(DBGeneratorService.students.get(studentIdToRemove - 1));
 				System.out.println("Student with ID " + studentIdToRemove + " is removed from the course "
 						+ courseIdToRemove + " in School database");
 				return;

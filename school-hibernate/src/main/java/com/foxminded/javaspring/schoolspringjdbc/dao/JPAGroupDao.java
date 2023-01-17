@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class JPAGroupDao implements GroupDao {
+public class JPAGroupDao {
 
 	@PersistenceContext
 	private final EntityManager em;
@@ -32,13 +32,11 @@ public class JPAGroupDao implements GroupDao {
 		log.info("Groups added to School database");
 	}
 
-	@Override
 	@Transactional
 	public void saveGroup(Group group) {
 		em.persist(group);
 	}
 
-	@Override
 	@Transactional
 	public List<Group> selectGroupsByStudentsCount(int studentsCount) {
 		return em

@@ -40,7 +40,7 @@ public class StudentGeneratorService {
 	public List<Student> generateNStudents(int countToGenerate) {
 		List<Student> studentsLocal = new ArrayList<>();
 		IntStream.rangeClosed(1, countToGenerate).forEach(
-				studentID -> studentsLocal.add(new Student(studentID, getRandomFirstName(), getRandomLastName())));
+				studentID -> studentsLocal.add(new Student(getRandomFirstName(), getRandomLastName())));
 		log.info("Students generated");
 		return studentsLocal;
 	}
@@ -93,7 +93,7 @@ public class StudentGeneratorService {
 			randomCourseIDIndex++;
 			numberOfAssignedCourses++;
 		}
-		DBGeneratorService.students.get(nextStudentID).setCoursesSet(coursesOfStudentSet);
+		DBGeneratorService.students.get(nextStudentID).setCourses(coursesOfStudentSet);
 	}
 
 }

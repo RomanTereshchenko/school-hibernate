@@ -28,7 +28,6 @@ public class GroupGeneratorService {
 		List<Group> groupsLocal = new ArrayList<>();
 			for (int i = 0; i < countToGenerate; i++) {
 			Group group = new Group();
-			group.setGroupID(i+1);
 			group.setGroupName(generateGroupName());
 			groupsLocal.add(group);
 		}

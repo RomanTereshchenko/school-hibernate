@@ -7,29 +7,26 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPACourseDao;
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentsCoursesDao;
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPATablesDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
 import com.foxminded.javaspring.schoolspringjdbc.model.Student;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 
-
-
 @Service
 public class DBGeneratorService {
-	
-	private JPATablesDao jdbcTablesDao;
+
+	private JPATablesDao jpaTablesDao;
 	private GroupGeneratorService groupGeneratorService;
-	private JPAGroupDao jdbcGroupDao;
-	private JPACourseDao jdbcCourseDao;
+	private JPAGroupDao jpaGroupDao;
+	private JPACourseDao jpaCourseDao;
 	private StudentGeneratorService studentGeneratorService;
-	private JPAStudentDao jdbcStudentDao;
-	private JPAStudentsCoursesDao jdbcStudentsCoursesDao;
+	private JPAStudentDao jpaStudentDao;
 	private CourseGeneratorService courseGeneratorService;
 	private ScannerUtil scannerUtil;
 	private int groupsNumber = 10;
@@ -37,48 +34,41 @@ public class DBGeneratorService {
 	private int menuOptionsNumber = 7;
 	private GroupService groupService;
 	private StudentService studentService;
-	private StudentCourseService studentCourseService;
-
 	public static List<Group> groups = new ArrayList<>();
 	public static List<Course> courses = new ArrayList<>();
 	public static List<Student> students = new ArrayList<>();
 
 	@Autowired
-	public DBGeneratorService(JPATablesDao jdbcTablesDao, GroupGeneratorService groupGeneratorService,
-			JPAGroupDao jdbcGroupDao, JPACourseDao jdbcCourseDao, StudentGeneratorService studentGeneratorService,
-			JPAStudentDao jdbcStudentDao, JPAStudentsCoursesDao jdbcStudentsCoursesDao,
-			CourseGeneratorService courseGeneratorService, GroupService groupService, StudentService studentService,
-			StudentCourseService studentCourseService, ScannerUtil scannerUtil) {
-		this.jdbcTablesDao = jdbcTablesDao;
+	public DBGeneratorService(JPATablesDao jpaTablesDao, GroupGeneratorService groupGeneratorService,
+			JPAGroupDao jpaGroupDao, JPACourseDao jpaCourseDao, StudentGeneratorService studentGeneratorService,
+			JPAStudentDao jpaStudentDao, CourseGeneratorService courseGeneratorService, GroupService groupService,
+			StudentService studentService, ScannerUtil scannerUtil) {
+		this.jpaTablesDao = jpaTablesDao;
 		this.groupGeneratorService = groupGeneratorService;
-		this.jdbcGroupDao = jdbcGroupDao;
-		this.jdbcCourseDao = jdbcCourseDao;
+		this.jpaGroupDao = jpaGroupDao;
+		this.jpaCourseDao = jpaCourseDao;
 		this.studentGeneratorService = studentGeneratorService;
-		this.jdbcStudentDao = jdbcStudentDao;
-		this.jdbcStudentsCoursesDao = jdbcStudentsCoursesDao;
+		this.jpaStudentDao = jpaStudentDao;
 		this.courseGeneratorService = courseGeneratorService;
 		this.groupService = groupService;
 		this.studentService = studentService;
-		this.studentCourseService = studentCourseService;
 		this.scannerUtil = scannerUtil;
 	}
 
-	
+	@Transactional
 	public void startUp() {
-		jdbcTablesDao.truncateTables();
+		jpaTablesDao.truncateTables();
 		groups = groupGeneratorService.generateNGroups(groupsNumber);
-		jdbcGroupDao.addAllGroupsToDB();
+		jpaGroupDao.addAllGroupsToDB();
 		courses = courseGeneratorService.generateCourses();
-		jdbcCourseDao.addAllCoursesToDB();
+		jpaCourseDao.addAllCoursesToDB();
 		students = studentGeneratorService.generateNStudents(studentsNumber);
-		jdbcStudentDao.addStudentsToDB();
+		jpaStudentDao.addStudentsToDB();
 		studentGeneratorService.assignAllGroupsToAllItsStudents();
-		jdbcStudentDao.addGroupIDToAllTheirStudentsInDB();
+		jpaStudentDao.updateAllStudentsInDB();
 		studentGeneratorService.assignCoursesToAllStudents();
-//		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
-		jdbcStudentDao.updateStudent(null);
-
-}
+		jpaStudentDao.updateAllStudentsInDB();
+	}
 
 	public void menu() {
 		String options = "1 - Find all groups with less or equal students' number \n2 - Find all students related to "
@@ -117,7 +107,7 @@ public class DBGeneratorService {
 				scannerUtil.scanInt();
 			}
 		}
-		scannerUtil.closeScan();;
+		scannerUtil.closeScan();
 	}
 
 	private void printMenu(String options) {

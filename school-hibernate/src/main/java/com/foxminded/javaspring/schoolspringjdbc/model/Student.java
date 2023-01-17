@@ -16,26 +16,28 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "students")
 @Table(name = "students", schema = "school")
 public class Student {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "student_id")
-	private int studentID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer studentID;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;
 
-	@Column(name = "group_id", insertable = false, updatable = false)
-	private int groupID;
+	@Column(name = "group_id")
+	private Integer groupID;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -43,12 +45,9 @@ public class Student {
 	@Column(name = "last_name")
 	private String lastName;
 
-//	@Transient
-//	public List<Course> courses;
-
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-	private Set<Course> coursesSet = new HashSet<>();
+	@JoinTable(name = "students_courses", schema = "school", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private Set<Course> courses = new HashSet<>();
 
 	public Student(int studentID, String firstName, String lastName) {
 		this.studentID = studentID;
@@ -66,14 +65,34 @@ public class Student {
 		this.groupID = groupID;
 	}
 	
+
+	public Student(Integer studentID, Integer groupID, String firstName, String lastName) {
+		this.studentID = studentID;
+		this.groupID = groupID;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 	public void addCourse (Course course) {
-		coursesSet.add(course);
-		course.getStudentsSet().add(this);
+		courses.add(course);
+		course.getStudents().add(this);
 	}
 	
 	public void removeCourse (Course course) {
-		coursesSet.remove(course);
-		course.getStudentsSet().remove(this);
+		courses.remove(course);
+		course.getStudents().remove(this);
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        return studentID != null && studentID.equals(((Student) o).getStudentID());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 
 }
