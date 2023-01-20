@@ -9,35 +9,30 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcCourseDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcStudentsCoursesDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcTablesDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPATablesDao;
 import com.foxminded.javaspring.schoolspringjdbc.service.CourseGeneratorService;
+import com.foxminded.javaspring.schoolspringjdbc.service.CourseService;
 import com.foxminded.javaspring.schoolspringjdbc.service.DBGeneratorService;
 import com.foxminded.javaspring.schoolspringjdbc.service.GroupGeneratorService;
+import com.foxminded.javaspring.schoolspringjdbc.service.GroupService;
 import com.foxminded.javaspring.schoolspringjdbc.service.StudentGeneratorService;
+import com.foxminded.javaspring.schoolspringjdbc.service.StudentService;
 
 @ExtendWith (MockitoExtension.class)
 class DBGeneratorServiceTest {
 	
 	@Mock
-	private JdbcTablesDao jdbcTablesDao;
+	private JPATablesDao jpaTablesDao;
 	@Mock
 	private GroupGeneratorService groupGeneratorService;
 	@Mock
-	private JdbcGroupDao jdbcGroupDao;
+	private GroupService groupService;
 	@Mock
 	private CourseGeneratorService courseGeneratorService;
 	@Mock
-	private JdbcCourseDao jdbcCourseDao;
+	private CourseService courseService;	@Mock	private StudentGeneratorService studentGeneratorService;
 	@Mock
-	private StudentGeneratorService studentGeneratorService;
-	@Mock
-	private JdbcStudentDao jdbcStudentDao;
-	@Mock
-	private JdbcStudentsCoursesDao jdbcStudentsCoursesDao;
+	private StudentService studentService;
 	
 	@InjectMocks
 	private DBGeneratorService dbGeneratorService;
@@ -45,29 +40,26 @@ class DBGeneratorServiceTest {
 	@Test
 	void testStartUp() {
 		
-		jdbcTablesDao.truncateTables();
+		jpaTablesDao.truncateTables();
 		groupGeneratorService.generateNGroups(10);
-		jdbcGroupDao.addAllGroupsToDB();
+		groupService.addAllGroupsToDB();
 		courseGeneratorService.generateCourses();
-		jdbcCourseDao.addAllCoursesToDB();
+		courseService.addAllCoursesToDB();
 		studentGeneratorService.generateNStudents(20);
-		jdbcStudentDao.addStudentsToDB();
+		studentService.addStudentsToDB();
 		studentGeneratorService.assignAllGroupsToAllItsStudents();
-		jdbcStudentDao.addGroupIDToAllTheirStudentsInDB();
+		studentService.updateAllStudentsInDB();
 		studentGeneratorService.assignCoursesToAllStudents();
-		jdbcStudentsCoursesDao.addStudentsCoursesAssignmentsToDB();
-		verify(jdbcTablesDao).truncateTables();
+		verify(jpaTablesDao).truncateTables();
 		verify(groupGeneratorService).generateNGroups(anyInt());
-		verify(jdbcGroupDao).addAllGroupsToDB();
+		verify(groupService).addAllGroupsToDB();
 		verify(courseGeneratorService).generateCourses();
-		verify(jdbcCourseDao).addAllCoursesToDB();
+		verify(courseService).addAllCoursesToDB();
 		verify(studentGeneratorService).generateNStudents(anyInt());
-		verify(jdbcStudentDao).addStudentsToDB();
+		verify(studentService).addStudentsToDB();
 		verify(studentGeneratorService).assignAllGroupsToAllItsStudents();
-		verify(jdbcStudentDao).addGroupIDToAllTheirStudentsInDB();
+		verify(studentService).updateAllStudentsInDB();
 		verify(studentGeneratorService).assignCoursesToAllStudents();
-		verify(jdbcStudentsCoursesDao).addStudentsCoursesAssignmentsToDB();
 	}
 	
-
 }

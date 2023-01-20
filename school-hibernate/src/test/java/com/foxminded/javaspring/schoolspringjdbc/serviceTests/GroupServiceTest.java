@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JdbcGroupDao;
+import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
 import com.foxminded.javaspring.schoolspringjdbc.service.GroupService;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
@@ -24,7 +24,7 @@ class GroupServiceTest {
 	private ScannerUtil scannerUtil;
 
 	@Mock
-	private JdbcGroupDao jdbcGroupDao;
+	private JPAGroupDao jdbcGroupDao;
 
 	@InjectMocks
 	private GroupService groupService;
