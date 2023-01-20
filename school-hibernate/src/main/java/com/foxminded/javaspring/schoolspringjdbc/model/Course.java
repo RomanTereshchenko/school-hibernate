@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity (name = "courses")
+@Entity
 @Table (name = "courses", schema = "school")
 public class Course {
 	

@@ -3,7 +3,6 @@ package com.foxminded.javaspring.schoolspringjdbc.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +12,6 @@ public class JPATablesDao {
 	@PersistenceContext
 	private final EntityManager em;
 
-	@Autowired
 	public JPATablesDao (EntityManager em) {
 		this.em = em;
 	}

@@ -62,8 +62,8 @@ class JpaGroupDaoTest {
 
 	@Test
 	@Transactional
-	void selectGroupsByStudentsCount_ReturnsGropWithSelectedStudentCount() {
-		jpaGroupDao.saveGroup(new Group("tt-00"));
+	void selectGroupsByStudentsCount_ReturnsGroupWithSelectedStudentCount() {
+		em.persist(new Group("tt-00"));
 		Student student1 = new Student();
 		student1.setGroupID(1);
 		student1.setFirstName("TestFName1");

@@ -74,14 +74,17 @@ class JpaStudentDaoTest {
 		delStudent.setFirstName("DelStudentFName");
 		delStudent.setLastName("DelStudentLName");
 		em.persist(delStudent);
-		Student student = (Student) em.createNativeQuery("SELECT * from school.students WHERE "
-				+ "first_name = 'DelStudentFName' AND last_name = 'DelStudentLName'", Student.class)
+		Student student = (Student) em
+				.createNativeQuery("SELECT * from school.students WHERE "
+						+ "first_name = 'DelStudentFName' AND last_name = 'DelStudentLName'", Student.class)
 				.getSingleResult();
 		assertNotNull(student);
 		jpaStudentDao.deleteStudentFromDB(student.getStudentID());
 		assertThrows(NoResultException.class, () -> {
-			em.createNativeQuery("Select * from school.students WHERE first_name = 'DelStudentFName' AND "
-					+ "last_name = 'DelStudentLName'", Student.class).getSingleResult();
+			em.createNativeQuery("Select * from school.students WHERE first_name = ? AND " + "last_name = ?;",
+					Student.class).setParameter(1, delStudent.getFirstName()).setParameter(2, delStudent.getLastName())
+					.getSingleResult();
+
 		});
 	}
 
@@ -97,8 +100,10 @@ class JpaStudentDaoTest {
 		em.persist(group);
 		updatingStudent.setGroupID(1);
 		jpaStudentDao.updateStudent(updatingStudent);
-		Student student = (Student) em.createNativeQuery("SELECT * from school.students WHERE "
-				+ "first_name = 'StudentFName' AND last_name = 'StudentLName'", Student.class).getSingleResult();
+		Student student = (Student) em
+				.createNativeQuery("SELECT * from school.students WHERE "
+						+ "first_name = 'StudentFName' AND last_name = 'StudentLName'", Student.class)
+				.getSingleResult();
 		assertEquals(1, student.getGroupID());
 	}
 
@@ -112,7 +117,7 @@ class JpaStudentDaoTest {
 		Course course = new Course();
 		course.setCourseName("TestCourse");
 		em.persist(course);
-		student.getCourses().add(course);
+		student.addCourse(course);
 		em.merge(student);
 		List<Student> studentsRelatedToCourse = jpaStudentDao.findStudentsRelatedToCourse("TestCourse");
 		assertEquals(1, studentsRelatedToCourse.size());

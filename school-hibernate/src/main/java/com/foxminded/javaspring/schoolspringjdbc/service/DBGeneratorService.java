@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.javaspring.schoolspringjdbc.dao.JPACourseDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JPAGroupDao;
-import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPATablesDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Group;
@@ -23,10 +20,8 @@ public class DBGeneratorService {
 
 	private JPATablesDao jpaTablesDao;
 	private GroupGeneratorService groupGeneratorService;
-	private JPAGroupDao jpaGroupDao;
-	private JPACourseDao jpaCourseDao;
+	private CourseService courseService;
 	private StudentGeneratorService studentGeneratorService;
-	private JPAStudentDao jpaStudentDao;
 	private CourseGeneratorService courseGeneratorService;
 	private ScannerUtil scannerUtil;
 	private int groupsNumber = 10;
@@ -40,15 +35,13 @@ public class DBGeneratorService {
 
 	@Autowired
 	public DBGeneratorService(JPATablesDao jpaTablesDao, GroupGeneratorService groupGeneratorService,
-			JPAGroupDao jpaGroupDao, JPACourseDao jpaCourseDao, StudentGeneratorService studentGeneratorService,
-			JPAStudentDao jpaStudentDao, CourseGeneratorService courseGeneratorService, GroupService groupService,
-			StudentService studentService, ScannerUtil scannerUtil) {
+			CourseService courseService, StudentGeneratorService studentGeneratorService,
+			CourseGeneratorService courseGeneratorService, GroupService groupService, StudentService studentService,
+			ScannerUtil scannerUtil) {
 		this.jpaTablesDao = jpaTablesDao;
 		this.groupGeneratorService = groupGeneratorService;
-		this.jpaGroupDao = jpaGroupDao;
-		this.jpaCourseDao = jpaCourseDao;
+		this.courseService = courseService;
 		this.studentGeneratorService = studentGeneratorService;
-		this.jpaStudentDao = jpaStudentDao;
 		this.courseGeneratorService = courseGeneratorService;
 		this.groupService = groupService;
 		this.studentService = studentService;
@@ -59,15 +52,15 @@ public class DBGeneratorService {
 	public void startUp() {
 		jpaTablesDao.truncateTables();
 		groups = groupGeneratorService.generateNGroups(groupsNumber);
-		jpaGroupDao.addAllGroupsToDB();
+		groupService.addAllGroupsToDB();
 		courses = courseGeneratorService.generateCourses();
-		jpaCourseDao.addAllCoursesToDB();
+		courseService.addAllCoursesToDB();
 		students = studentGeneratorService.generateNStudents(studentsNumber);
-		jpaStudentDao.addStudentsToDB();
+		studentService.addStudentsToDB();
 		studentGeneratorService.assignAllGroupsToAllItsStudents();
-		jpaStudentDao.updateAllStudentsInDB();
+		studentService.updateAllStudentsInDB();
 		studentGeneratorService.assignCoursesToAllStudents();
-		jpaStudentDao.updateAllStudentsInDB();
+		studentService.updateAllStudentsInDB();
 	}
 
 	public void menu() {

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "groups")
+@Entity
 @Table(name = "groups", schema = "school")
 public class Group {
 

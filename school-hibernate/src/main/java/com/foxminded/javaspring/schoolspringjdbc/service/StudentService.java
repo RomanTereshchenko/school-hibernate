@@ -5,13 +5,18 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.javaspring.schoolspringjdbc.dao.JPAStudentDao;
 import com.foxminded.javaspring.schoolspringjdbc.model.Course;
 import com.foxminded.javaspring.schoolspringjdbc.model.Student;
 import com.foxminded.javaspring.schoolspringjdbc.utils.ScannerUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Transactional
+@Slf4j
 public class StudentService {
 
 	private ScannerUtil scannerUtil;
@@ -21,6 +26,20 @@ public class StudentService {
 	public StudentService(ScannerUtil scannerUtil, JPAStudentDao jpaStudentDao) {
 		this.scannerUtil = scannerUtil;
 		this.jpaStudentDao = jpaStudentDao;
+	}
+
+	public void addStudentsToDB() {
+		DBGeneratorService.students.forEach(student -> jpaStudentDao.saveStudent(student));
+		log.info("Students added to School database");
+	}
+
+	public void updateAllStudentsInDB() {
+		for (Student student : DBGeneratorService.students) {
+			if (student.getGroupID() != 0) {
+				jpaStudentDao.updateStudent(student);
+			}
+		}
+		log.info("Students updated");
 	}
 
 	public List<Student> findStudentsRelatedToCourse() {
@@ -68,26 +87,26 @@ public class StudentService {
 		}
 		System.out.println("Enter the course ID");
 		int courseId = scannerUtil.scanInt();
-		Set<Course> studentCourses = DBGeneratorService.students.get(studentId - 1).getCourses();
+		Student student = DBGeneratorService.students.get(studentId - 1);
+		Set<Course> studentCourses = student.getCourses();
 		for (Course studentCourse : studentCourses) {
 			if (studentCourse.getCourseID() == courseId) {
 				System.out.println("This student is already assigned to this course. Choose other student and course.");
 				return;
 			}
-			DBGeneratorService.students.get(studentId - 1).getCourses()
-					.add(DBGeneratorService.courses.get(courseId - 1));
-			jpaStudentDao.updateStudent(DBGeneratorService.students.get(studentId - 1));
-			System.out.println("Course with ID " + courseId + " is assigned to student with ID " + studentId
-					+ " in School database");
-			return;
 		}
+		student.getCourses().add(DBGeneratorService.courses.get(courseId - 1));
+		jpaStudentDao.updateStudent(student);
+		System.out.println(
+				"Course with ID " + courseId + " is assigned to student with ID " + studentId + " in School database");
 	}
 
 	public void removeStudentFromCourse() {
 		System.out.println("Remove the student from one of their courses");
 		System.out.println("Enter the student ID");
 		int studentIdToRemove = scannerUtil.scanInt();
-		Set<Course> studentCourses = DBGeneratorService.students.get(studentIdToRemove - 1).getCourses();
+		Student student = DBGeneratorService.students.get(studentIdToRemove - 1);
+		Set<Course> studentCourses = student.getCourses();
 		System.out.println("This student is assigned to the following courses:");
 		for (Course studentCourse : studentCourses) {
 			System.out.println(studentCourse.getCourseID() + " - "
@@ -97,15 +116,14 @@ public class StudentService {
 		int courseIdToRemove = scannerUtil.scanInt();
 		for (Course studentCourse : studentCourses) {
 			if (studentCourse.getCourseID() == courseIdToRemove) {
-				DBGeneratorService.students.get(studentIdToRemove - 1).getCourses()
+				student.getCourses()
 						.remove(DBGeneratorService.courses.get(courseIdToRemove - 1));
-				jpaStudentDao.updateStudent(DBGeneratorService.students.get(studentIdToRemove - 1));
+				jpaStudentDao.updateStudent(student);
 				System.out.println("Student with ID " + studentIdToRemove + " is removed from the course "
 						+ courseIdToRemove + " in School database");
 				return;
 			}
 		}
 		System.out.println("This course is not assigned to this student. Choose other student and course");
-		return;
 	}
 }

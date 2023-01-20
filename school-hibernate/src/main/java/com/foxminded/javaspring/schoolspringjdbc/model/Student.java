@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "students")
+@Entity
 @Table(name = "students", schema = "school")
 public class Student {
 
@@ -94,5 +94,6 @@ public class Student {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 
 }

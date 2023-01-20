@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,29 +14,15 @@ import com.foxminded.javaspring.schoolspringjdbc.service.DBGeneratorService;
 import lombok.extern.slf4j.Slf4j;
 
 @Repository
-@Slf4j
 public class JPAGroupDao {
 
 	@PersistenceContext
-	private final EntityManager em;
+	private EntityManager em;
 
-	@Autowired
-	public JPAGroupDao(EntityManager em) {
-		this.em = em;
-	}
-
-	@Transactional
-	public void addAllGroupsToDB() {
-		DBGeneratorService.groups.forEach(this::saveGroup);
-		log.info("Groups added to School database");
-	}
-
-	@Transactional
 	public void saveGroup(Group group) {
 		em.persist(group);
 	}
 
-	@Transactional
 	public List<Group> selectGroupsByStudentsCount(int studentsCount) {
 		return em
 				.createNativeQuery("SELECT g.group_id, g.group_name FROM "
